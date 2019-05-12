@@ -1,7 +1,10 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 export EUROPA_HOME=~/europa
-if [! -d $EUROPA_HOME]; then
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$EUROPA_HOME/lib
+
+# Get EUROPA if not installed yet
+if [ ! -d $EUROPA_HOME ]; then
   mkdir $EUROPA_HOME
   cd $EUROPA_HOME
   wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/europa-pso/europa-2.6-linux64.zip
