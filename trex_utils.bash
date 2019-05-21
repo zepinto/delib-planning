@@ -10,9 +10,14 @@ dune_git="https://github.com/lsts/dune.git"
 dune_version='master'
 dune_home="$workspace_dir/dune"
 
+neptus_git="git@github.com:lsts/neptus.git"
+neptus_version='develop'
+neptus_home="$workspace_dir/neptus"
+
 europa_git="git@github.com:zepinto/europa.git"
 europa_version='stable'
 europa_home="$workspace_dir/europa"
+
 
 export PLASMA_HOME="$europa_home/source"
 export EUROPA_HOME="$europa_home"
@@ -21,7 +26,7 @@ cpu_cores=(grep -c ^processor /proc/cpuinfo)
 
 install_dependencies()
 {
-    sudo apt install bzip2 unzip g++ cmake jam ant libboost-all-dev libantlr3c-dev swig
+    sudo apt install bzip2 unzip g++ cmake jam ant libboost-all-dev libantlr3c-dev swig openjdk-8-jdk
 }
 
 create_workspace()
@@ -79,7 +84,8 @@ compile_trex()
     if [ ! -d $trex_home ]; then
         mkdir -p $trex_home/build
     fi 
-    git clone --branch $trex_version $trex_git source
+    
+    git clone --branch $trex_version $trex_git "$trex_home/source"
     cd $trex_home/source && git pull
     cd $trex_home/build
     DUNE_HOME=$(ls -d -1 $dune_home/build/dune-*/)
@@ -88,6 +94,13 @@ compile_trex()
       -DDUNE_INCLUDE_DIR="$DUNE_HOME/include" \
       -DDUNE_CORE_LIB="$DUNE_HOME/lib/libdune-core.so" ../source 
     make package -j$(grep -c ^processor /proc/cpuinfo)
+}
+
+compile_neptus()
+{
+    git clone --branch $neptus_version $neptus_git "$neptus_home"
+    cd $neptus_home && git pull
+    ant jar
 }
 
 build_all()
