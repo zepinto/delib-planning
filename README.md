@@ -1,7 +1,5 @@
 # Introduction
 
-## What is T-REX and why do you need it?
-
 In classical planning, autonomous systems \(robots\) interact with the world first by understanding it's state \(sensing\), then by planning the actions required to change it in order to achieve a desired objective \(planning\) and then by executing those actions and verifying that the resulting state matches the desired state \(acting\). Thus, automated planning typically consists in one or more sequences of sense-plan-act which will drive the state of the world towards the desired state.
 
 In the real-world, however, there is not a single goal that the robot is trying to achieve but a set of parallel objectives that it is trying to verify at all times together with a varying set of goals that can be simplified onto sub-goals that can be achieved in the near term. For instance, consider the objective of "watching the latest Star Wars movie". To fulfil this objective a person must:
@@ -17,20 +15,20 @@ The previous set of sub-goals have very different timelines, for instance the 2.
 
 The concept of timeline is very powerful because it both allows separation of concerns but also inter-timeline dependency. For instance, one can only watch a movie AFTER buying the tickets but one can buy the tickets CONCURRENTLY \(during\) with travelling to the theater. 
 
+Both T-REX and Europa exploit this concept of timelines for hierarchical plan decomposition (a task results in several subtasks generated in a different timeline) and separation of concerns. Europa also allows modelling the real-world via timelines, intervals on those timelines (temporal tokens) and relationships between them.
+
+To know more about timelines, T-REX and EUROPA, have a look in [this paper](https://link.springer.com/chapter/10.1007/978-1-4614-5659-9_3).
+
+# Compiling everything
+
+To help with compilation, this project includes an helping script with several functions that can help you compile all software needed to run a simple T-REX model (for AUVs). To compile everything use the following:
+
+```bash
+git clone https://github.com/zepinto/europa-tools
+cd europa_tools
+source trex_utils.bash
+build_all
 ```
-$ give me super-powers
-```
 
-{% hint style="info" %}
- Super-powers are granted randomly so please submit an issue if you're not happy with yours.
-{% endhint %}
-
-Once you're strong enough, save the world:
-
-```
-// Ain't no code for that yet, sorry
-echo 'You got to trust me on this, I saved the world'
-```
-
-
+After the previous you will have the *europa_tools* folder with **neptus**, **dune**, **trex** and **europa** subfolders. To start T-REX, use the command ```start_trex```. To start DUNE, use the command ```start_dune``` and, to start Neptus, use ```start_neptus```.
 
