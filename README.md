@@ -21,7 +21,7 @@ Both T-REX (planning + execution engine) and EUROPA (planner) exploit the concep
 
 To know more about timelines, T-REX and EUROPA, have a look in [this paper](https://link.springer.com/chapter/10.1007/978-1-4614-5659-9_3).
 
-[[Installing Everything]
+[[Compile-all-tools|Installing Everything]
 
 [[Running a simple example]
 
