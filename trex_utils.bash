@@ -18,6 +18,7 @@ europa_git="git@github.com:zepinto/europa.git"
 europa_version='stable'
 europa_home="$workspace_dir/europa"
 
+text_editor="xed"
 
 export PLASMA_HOME="$europa_home/source"
 export EUROPA_HOME="$europa_home"
@@ -26,7 +27,7 @@ cpu_cores=(grep -c ^processor /proc/cpuinfo)
 
 install_dependencies()
 {
-    sudo apt install bzip2 unzip g++ cmake jam ant libboost-all-dev libantlr3c-dev swig openjdk-8-jdk
+    sudo apt install bzip2 unzip g++ cmake jam ant libboost-all-dev libantlr3c-dev swig openjdk-8-jdk graphviz
 }
 
 create_workspace()
@@ -100,7 +101,7 @@ compile_neptus()
 {
     git clone --branch $neptus_version $neptus_git "$neptus_home"
     cd $neptus_home && git pull
-    ant jar
+    ant
 }
 
 build_all()
@@ -110,6 +111,8 @@ build_all()
     compile_europa
     compile_dune
     compile_trex
+    compile_neptus
+    cd $workspace_dir
 }
 
 start_dune()
@@ -119,7 +122,7 @@ start_dune()
         killall dune
     done
     
-    xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T "XP1 Simulator" -e "cd \"$dune_home/build/\";./dune -c development/xp1-trex -p Simulation" &disown
+    xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry 80x27+20+20 -T "XP1 Simulator" -e "cd \"$dune_home/build/\";./dune -c development/xp1-trex -p Simulation" &disown
 }
 
 start_trex()
@@ -128,7 +131,24 @@ start_trex()
     while pgrep -x "amc" > /dev/null; do
         killall amc
     done 
-   xterm -xrm 'XTerm.vt100.allowTitleOps: false' -T "T-REX" -e "cd \"$trex_home/build/\";. trex_devel.bash; amc auv/auv1" &disown
+   xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry 80x27+120+120 -T "T-REX" -e "cd \"$trex_home/build/\";. trex_devel.bash; amc auv/auv1" &disown
+}
+
+start_sim()
+{
+  start_dune
+  start_trex
+  start_neptus
+}
+
+config_trex()
+{
+    $text_editor 
+}
+
+start_neptus()
+{
+   xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry 80x27+220+220  -T "Neptus" -e "cd \"$neptus_home\";./neptus.sh conf/consoles/trex.ncon" &disown
 }
 
 trex_log()
